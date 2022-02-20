@@ -1,43 +1,58 @@
+import 'package:flutter/material.dart';
 import 'package:medsreminder/models/sqlobject.dart';
+import 'package:medsreminder/utils/utils.dart';
 
 class Appointment implements SQLObject {
+  int? id;
+  int? notificationId;
+  String name;
+  String? place;
+  String? note;
+  IconData? icon;
+  int reminder;
+  DateTime? date;
+  TimeOfDay? time;
 
-  final int? id;
-  final String name;
-  final String? place;
-  final String? note;
-  final int reminder;
-  final int? reminderId;
-  final String datetime;
-
-  Appointment({
-    this.id,
-    required this.name,
-    this.place,
-    this.note,
-    required this.reminder,
-    this.reminderId,
-    required this.datetime
-  });
+  Appointment(
+      {this.id,
+      this.notificationId,
+      required this.name,
+      this.place,
+      this.note,
+      required this.icon,
+      required this.reminder,
+      this.date,
+      this.time});
 
   @override
-  Appointment.fromMap(Map<String, dynamic> res) :
-    id = res["id"],
-    name = res["name"],
-    place = res["place"],
-    note = res["note"],
-    reminder = res["reminder"],
-    reminderId = res["reminderId"],
-    datetime = res["datetime"];
+  Appointment.fromMap(Map<String, dynamic> res)
+      : id = res["id"],
+        notificationId = res["notificationId"],
+        name = res["name"],
+        place = res["place"],
+        note = res["note"],
+        icon = Utils.parseIcon(res["icon"]),
+        reminder = res["reminder"],
+        date = Utils.parseDate(res["date"]),
+        time = Utils.parseTime(res["time"]);
 
   @override
   Map<String, dynamic> toMap() {
-    return {'id': id,'name': name, 'place': place, 'note': note, 'reminder': reminder, 'reminderId': reminderId, 'datetime': datetime };
+    return {
+      'id': id,
+      'notificationId': notificationId,
+      'name': name,
+      'place': place,
+      'note': note,
+      'icon': Utils.iconToString(icon),
+      'reminder': reminder,
+      'date': Utils.dateToString(date),
+      'time': Utils.timeToString(time)
+    };
   }
 
   @override
   String toString() {
-    return "Appointment: { id: $id, name: $name, place: $place, note: $note, reminder: $reminder, reminderId: $reminderId, datetime: $datetime }";
+    return "Appointment: { id: $id, notificationId: $notificationId, name: $name, place: $place, note: $note, icon: $icon, reminder: $reminder, date: $date, time: $time }";
   }
-
 }

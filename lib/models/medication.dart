@@ -1,49 +1,46 @@
+import 'package:flutter/material.dart';
 import 'package:medsreminder/models/sqlobject.dart';
+import 'package:medsreminder/utils/utils.dart';
 
 class Medication implements SQLObject {
+  int? id;
+  String name;
+  int? strength;
+  String? sUnit;
+  IconData icon;
+  int daily;
 
-  final int? id;
-  final String name;
-  final double? strength;
-  final String? sUnit;
-  final String icon;
-  final int refill;
-  final int? remaining;
-  final int daily;
-  final int? reminderId;
-
-  Medication({
-    this.id,
-    required this.name,
-    this.strength,
-    this.sUnit,
-    required this.icon,
-    required this.refill,
-    this.remaining,
-    required this.daily,
-    this.reminderId
-  });
+  Medication(
+      {this.id,
+      required this.name,
+      this.strength,
+      this.sUnit,
+      required this.icon,
+      required this.daily});
 
   @override
-  Medication.fromMap(Map<String, dynamic> res) :
-    id = res["id"],
-    name = res["name"],
-    strength = res["strength"],
-    sUnit = res["sUnit"],
-    icon = res["icon"],
-    refill = res["refill"],
-    remaining = res["remaining"],
-    daily = res["daily"],
-    reminderId = res["reminderId"];
+  Medication.fromMap(Map<String, dynamic> res)
+      : id = res["id"],
+        name = res["name"],
+        strength = res["strength"],
+        sUnit = res["sUnit"],
+        icon = Utils.parseIcon(res["icon"])!,
+        daily = res["daily"];
 
   @override
   Map<String, dynamic> toMap() {
-    return {'id': id,'name': name, 'strength': strength, 'sUnit': sUnit, 'icon': icon, 'refill': refill, 'remaining': remaining, 'daily': daily, 'reminderId': reminderId };
+    return {
+      'id': id,
+      'name': name,
+      'strength': strength,
+      'sUnit': sUnit,
+      'icon': Utils.iconToString(icon),
+      'daily': daily
+    };
   }
 
   @override
   String toString() {
-    return "Medication: { id: $id, name: $name, strength: $strength, sUnit: $sUnit, icon: $icon, refill: $refill, remaining: $remaining, daily: $daily, reminderId: $reminderId }";
+    return "Medication: { id: $id, name: $name, strength: $strength, sUnit: $sUnit, icon: $icon, daily: $daily }";
   }
-
 }

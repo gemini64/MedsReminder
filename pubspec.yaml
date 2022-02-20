@@ -1,5 +1,5 @@
 name: medsreminder
-description: A new Flutter project.
+description: A simple personal health agenda
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -30,13 +30,16 @@ dependencies:
   flutter:
     sdk: flutter
   path: ^1.8.0
-  sqflite: ^2.0.0+4
+  path_provider: ^2.0.8
+  sqflite: ^2.0.2
+  provider: ^6.0.2
+  flutter_iconpicker: ^3.1.2
+  table_calendar: ^3.0.3
+  datetime_picker_formfield: ^2.0.0
+  flutter_local_notifications: ^9.2.0
+  cron: ^0.4.0
+
   
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:

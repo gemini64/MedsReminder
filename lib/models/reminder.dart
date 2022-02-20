@@ -1,40 +1,47 @@
+import 'package:flutter/material.dart';
 import 'package:medsreminder/models/sqlobject.dart';
+import 'package:medsreminder/utils/utils.dart';
 
 class Reminder implements SQLObject {
-
-  final int? id;
-  final String type;
-  final int referenceId;
-  final int daily;
-  final String? date;
-  final String time;
+  int? id;
+  int? notificationId;
+  int referenceId;
+  int? pills;
+  int? taken;
+  TimeOfDay? time;
 
   Reminder({
     this.id,
-    required this.type,
+    this.notificationId,
     required this.referenceId,
-    required this.daily,
-    this.date,
-    required this.time,
+    this.pills,
+    this.taken,
+    this.time,
   });
 
   @override
-  Reminder.fromMap(Map<String, dynamic> res) :
-    id = res["id"],
-    type = res["type"],
-    referenceId = res["referenceId"],
-    daily = res["daily"],
-    date = res["date"],
-    time = res["time"];
+  Reminder.fromMap(Map<String, dynamic> res)
+      : id = res["id"],
+        notificationId = res["notificationId"],
+        referenceId = res["referenceId"],
+        pills = res["pills"],
+        taken = res["taken"],
+        time = Utils.parseTime(res["time"]);
 
   @override
   Map<String, dynamic> toMap() {
-    return { 'id': id, 'type': type, 'referenceId': referenceId, 'daily': daily, 'date': date, 'time': time };
+    return {
+      'id': id,
+      'notificationId': notificationId,
+      'referenceId': referenceId,
+      'pills': pills,
+      'taken': taken,
+      'time': Utils.timeToString(time)
+    };
   }
 
   @override
   String toString() {
-    return "Medication: { id: $id, type: $type, referenceId: $referenceId, daily: $daily, date: $date, time: $time }";
+    return "Reminder: { id: $id, notificationId: $notificationId, referenceId: $referenceId, pills: $pills, taken: $taken, time: $time }";
   }
-
 }
