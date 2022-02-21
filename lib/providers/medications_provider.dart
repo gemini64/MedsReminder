@@ -66,6 +66,13 @@ class MedicationsProvider with ChangeNotifier {
 
   // Get element by id
   Medication selectById(int id) {
-    return _medications.firstWhere((e) => e.id == id);
+    return _medications.firstWhere((e) => e.id == id,
+        orElse: () => Medication(
+              name: "",
+              icon: 0,
+              daily: 0,
+              strength: 0,
+              sUnit: "mg",
+            ));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medsreminder/appdata/application_data.dart';
 import 'package:medsreminder/forms/appointments_form.dart';
 import 'package:medsreminder/models/appointment.dart';
 import '../components/dialogs.dart';
@@ -23,6 +24,7 @@ class AppointmentDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         title: const Text(
           "Appointment info",
           textAlign: TextAlign.center,
@@ -59,13 +61,12 @@ class AppointmentDetails extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(0.0, 18.0, 0.0, 9.0),
-            child: Icon(
-              appointment.icon,
-              size: 64.0,
-            ),
-          ),
+              alignment: Alignment.center,
+              padding: EdgeInsets.fromLTRB(0.0, 18.0, 0.0, 9.0),
+              child: Image(
+                image: AssetImage(ApplicationData.appoIcons[appointment.icon]!),
+                width: 64.0,
+              )),
           Container(
             padding: EdgeInsets.fromLTRB(60.0, 4.0, 60.0, 4.0),
             alignment: Alignment.center,
@@ -102,7 +103,7 @@ class AppointmentDetails extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Date",
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
               ),
@@ -125,7 +126,7 @@ class AppointmentDetails extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Time",
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
               ),
@@ -147,7 +148,7 @@ class AppointmentDetails extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Takes place in",
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
                     Container(
@@ -155,7 +156,7 @@ class AppointmentDetails extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         appointment.place!,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.caption,
                       ),
                     ),
                   ],
@@ -188,7 +189,10 @@ class AppointmentDetails extends StatelessWidget {
                   alignment: Alignment.topLeft,
                   child: Text(
                     appointment.note!,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(height: 1.6),
                   ),
                 )
               : SizedBox(),
@@ -219,7 +223,7 @@ class AppointmentDetails extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Active",
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
               ),

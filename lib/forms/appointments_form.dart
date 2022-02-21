@@ -27,7 +27,7 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
     name: "",
     place: "",
     note: "",
-    icon: ApplicationData.appoIcons["default"]!,
+    icon: 0,
     reminder: 0,
     date: DateTime.now(),
     time: TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute),
@@ -71,9 +71,18 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
     return WillPopScope(
       child: Scaffold(
           appBar: AppBar(
+            elevation: 0,
             title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Add appointment'),
+                Text(
+                  ('Add appointment').toUpperCase(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .overline!
+                      .copyWith(fontSize: 12.0, height: 1.8),
+                  textAlign: TextAlign.left,
+                ),
                 Text(_titles[_pageIndex]),
               ],
             ),
@@ -89,14 +98,19 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
             ),
             actions: <Widget>[
               TextButton(
-                  onPressed: () {
-                    if (_pageIndex == _formKeys.length - 1) {
-                      sendData();
-                    } else {
-                      nextFormStep();
-                    }
-                  },
-                  child: Text(_actionText[_pageIndex])),
+                onPressed: () {
+                  if (_pageIndex == _formKeys.length - 1) {
+                    sendData();
+                  } else {
+                    nextFormStep();
+                  }
+                },
+                child: Text(
+                  _actionText[_pageIndex],
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                ),
+              ),
             ],
           ),
           body: GestureDetector(
@@ -120,8 +134,13 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
                     children: [
                       Container(
                         padding: EdgeInsets.all(18.0),
-                        child:
-                            Text('Pick a title and time for your appointment'),
+                        child: Text(
+                            ('Pick a title and time for your appointment')
+                                .toUpperCase(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .overline!
+                                .copyWith(fontSize: 12.0, height: 1.6)),
                       ),
                       const Divider(
                         height: 1,
@@ -133,7 +152,12 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
                       Container(
                         padding: EdgeInsets.all(18.0),
                         child: Text(
-                            '(Optional) Add any useful note and set a place for your apppointment'),
+                            ('(Optional) Add any useful note and set a place for your apppointment')
+                                .toUpperCase(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .overline!
+                                .copyWith(fontSize: 12.0, height: 1.6)),
                       ),
                       const Divider(
                         height: 1,
@@ -153,7 +177,12 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
                     children: [
                       Container(
                         padding: EdgeInsets.all(18.0),
-                        child: Text('(Optional) Set a notification'),
+                        child: Text(
+                            ('(Optional) Set a notification').toUpperCase(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .overline!
+                                .copyWith(fontSize: 12.0, height: 1.6)),
                       ),
                       const Divider(
                         height: 1,
@@ -284,7 +313,8 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
           //focusNode: _form1Focus,
           maxLength: 40,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(14.0))),
             hintText: "A name for this appointment...",
             labelText: "Title*",
             helperText: "",
@@ -317,7 +347,8 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
           icon: Icon(
             Icons.edit,
           ),
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(14.0))),
           hintText: "Anything you wish to remember...",
           labelText: "Notes (Optional)",
           alignLabelWithHint: true,
@@ -348,7 +379,8 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
           icon: Icon(Icons.place),
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(14.0))),
           hintText: "Takes place in...",
           labelText: "Place (Optional)",
           helperText: "",
@@ -380,7 +412,8 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
               child: TextFormField(
                   decoration: InputDecoration(
                     icon: Icon(Icons.calendar_today),
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(14.0))),
                     hintText: Utils.prettyDate(_appointment.date),
                     helperText: "",
                   ),
@@ -407,7 +440,8 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
             padding: EdgeInsets.fromLTRB(0, 0, 18, 18),
             child: TextFormField(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(14.0))),
                 hintText: Utils.prettyTime(_appointment.time),
                 helperText: "",
               ),
@@ -448,7 +482,8 @@ class _AppointmentsFormState extends State<AppointmentsForm> {
               flex: 4,
               child: Container(
                   alignment: Alignment.centerLeft,
-                  child: Text("Set a notification"))),
+                  child: Text("Set a notification",
+                      style: Theme.of(context).textTheme.bodyText2))),
           Expanded(
               flex: 1,
               child: Container(

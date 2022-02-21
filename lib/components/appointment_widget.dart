@@ -1,3 +1,4 @@
+import 'package:medsreminder/appdata/application_data.dart';
 import 'package:medsreminder/models/appointment.dart';
 import 'package:medsreminder/screens/appointment_details.dart';
 import 'package:flutter/material.dart';
@@ -45,9 +46,10 @@ class AppointmentWidget extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.all(18),
-                    child: Icon(
-                      appointment.icon,
-                      size: 42.0,
+                    child: Image(
+                      image: AssetImage(
+                          ApplicationData.appoIcons[appointment.icon]!),
+                      width: 42.0,
                     ),
                   ),
                   Expanded(
@@ -67,7 +69,10 @@ class AppointmentWidget extends StatelessWidget {
                             padding: EdgeInsets.fromLTRB(0.0, 4.0, 60.0, 4.0),
                             child: Text(
                               appointment.place!,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(fontStyle: FontStyle.italic),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             )),
@@ -78,7 +83,7 @@ class AppointmentWidget extends StatelessWidget {
                               appointment.note!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.caption,
                             )),
                       ],
                     ),

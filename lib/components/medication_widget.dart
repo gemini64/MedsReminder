@@ -1,3 +1,4 @@
+import 'package:medsreminder/appdata/application_data.dart';
 import 'package:medsreminder/models/medication.dart';
 import 'package:medsreminder/screens/medication_details.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,10 @@ class MedicationWidget extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(18.0),
                 alignment: Alignment.center,
-                child: Icon(
-                  medication.icon,
-                  size: 42.0,
+                child: Image(
+                  image:
+                      AssetImage(ApplicationData.pillsIcons[medication.icon]!),
+                  width: 42.0,
                 ),
               ),
               Expanded(
@@ -66,7 +68,7 @@ class MedicationWidget extends StatelessWidget {
                                       " " +
                                       medication.sUnit!)
                                   : "",
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.caption,
                             ),
                           ),
                         ],

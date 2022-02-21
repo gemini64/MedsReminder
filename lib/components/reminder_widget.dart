@@ -1,8 +1,10 @@
+import 'package:medsreminder/appdata/application_data.dart';
 import 'package:medsreminder/components/dialogs.dart';
 import 'package:medsreminder/models/medication.dart';
 import 'package:medsreminder/models/reminder.dart';
 import 'package:flutter/material.dart';
 import 'package:medsreminder/utils/utils.dart';
+import 'package:path/path.dart';
 
 /*
   + reminder: reminder record as SQLObject.
@@ -45,9 +47,10 @@ class ReminderWidget extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(18),
                 alignment: Alignment.center,
-                child: Icon(
-                  medication.icon,
-                  size: 42.0,
+                child: Image(
+                  image:
+                      AssetImage(ApplicationData.pillsIcons[medication.icon]!),
+                  width: 42.0,
                 ),
               ),
               Expanded(
@@ -65,7 +68,7 @@ class ReminderWidget extends StatelessWidget {
                               medication.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.headline6,
+                              style: (Theme.of(context).textTheme.headline6),
                             ),
                           ),
                           Container(
@@ -75,7 +78,7 @@ class ReminderWidget extends StatelessWidget {
                               (Utils.prettyTime(reminder.time) +
                                   " - " +
                                   "Take ${reminder.pills}"),
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.caption,
                             ),
                           ),
                         ],
@@ -85,9 +88,10 @@ class ReminderWidget extends StatelessWidget {
                       padding: EdgeInsets.all(9.0),
                       alignment: Alignment.centerRight,
                       child: Checkbox(
-                        //checkColor: Colors.white,
+                        checkColor: Colors.white,
                         shape: CircleBorder(),
-                        //fillColor: MaterialStateProperty.resolveWith(getColor),
+                        activeColor:
+                            Utils.getCheckColor(reminder.taken!, context),
                         tristate: true,
                         value: _checkbox[reminder.taken!],
                         onChanged: (bool? value) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medsreminder/appdata/application_data.dart';
 import 'package:medsreminder/forms/medications_form.dart';
 import 'package:medsreminder/models/medication.dart';
 import 'package:medsreminder/models/reminder.dart';
@@ -26,6 +27,7 @@ class MedicationDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: const Text(
             "Medication info",
             textAlign: TextAlign.center,
@@ -62,13 +64,13 @@ class MedicationDetails extends StatelessWidget {
         body: ListView(
           children: <Widget>[
             Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.fromLTRB(0.0, 18.0, 0.0, 9.0),
-              child: Icon(
-                medication.icon,
-                size: 64.0,
-              ),
-            ),
+                alignment: Alignment.center,
+                padding: EdgeInsets.fromLTRB(0.0, 18.0, 0.0, 9.0),
+                child: Image(
+                  image:
+                      AssetImage(ApplicationData.pillsIcons[medication.icon]!),
+                  width: 64.0,
+                )),
             Container(
               padding: EdgeInsets.fromLTRB(60.0, 4.0, 60.0, 4.0),
               alignment: Alignment.center,
@@ -90,7 +92,8 @@ class MedicationDetails extends StatelessWidget {
                         " " +
                         medication.sUnit!)
                     : "",
-                style: Theme.of(context).textTheme.bodyText2,
+                style: (Theme.of(context).textTheme.subtitle2)!
+                    .copyWith(fontWeight: FontWeight.w400, fontSize: 14.0),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -146,7 +149,7 @@ class MedicationDetails extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Reminder ${remNumber}",
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Container(
@@ -154,7 +157,7 @@ class MedicationDetails extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Take ${reminder.pills}",
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.caption,
                 ),
               ),
             ],

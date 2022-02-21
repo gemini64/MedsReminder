@@ -7,7 +7,7 @@ class Medication implements SQLObject {
   String name;
   int? strength;
   String? sUnit;
-  IconData icon;
+  int? icon;
   int daily;
 
   Medication(
@@ -24,7 +24,7 @@ class Medication implements SQLObject {
         name = res["name"],
         strength = res["strength"],
         sUnit = res["sUnit"],
-        icon = Utils.parseIcon(res["icon"])!,
+        icon = res["icon"],
         daily = res["daily"];
 
   @override
@@ -34,7 +34,7 @@ class Medication implements SQLObject {
       'name': name,
       'strength': strength,
       'sUnit': sUnit,
-      'icon': Utils.iconToString(icon),
+      'icon': icon,
       'daily': daily
     };
   }

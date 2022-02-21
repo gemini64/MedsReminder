@@ -29,6 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
       List<Appointment> appointments = appoProvider.events[_currentDate] ?? [];
       List<Reminder> reminders = remsProvider.reminders;
 
+      // this is a hack to avoid state corruption after meds deletion
+      reminders.removeWhere(
+          (e) => medsProvider.selectById(e.referenceId).id == null);
+
       return ListView(
         children: <Widget>[
           // - - Today's scheduled appointments
@@ -36,7 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.fromLTRB(18, 18, 0, 4),
             alignment: Alignment.topLeft,
             child: Text(
-              ApplicationData.daysOfTheWeek[_currentDate.weekday] ?? "",
+              (ApplicationData.daysOfTheWeek[_currentDate.weekday] ?? "")
+                  .toUpperCase(),
               style: Theme.of(context).textTheme.overline,
             ),
           ),

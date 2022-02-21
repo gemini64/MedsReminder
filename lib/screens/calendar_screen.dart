@@ -91,6 +91,17 @@ class _CalendarState extends State<Calendar> {
     return ListView(
       children: <Widget>[
         TableCalendar(
+          calendarStyle: CalendarStyle(
+            selectedDecoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryVariant,
+                shape: BoxShape.circle),
+            todayDecoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                shape: BoxShape.circle),
+            markerDecoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                shape: BoxShape.circle),
+          ),
           firstDay: _initialDate,
           lastDay: _finalDate,
           focusedDay: _focusedDay,
@@ -116,7 +127,8 @@ class _CalendarState extends State<Calendar> {
           padding: EdgeInsets.fromLTRB(18, 18, 0, 4),
           alignment: Alignment.topLeft,
           child: Text(
-            ApplicationData.daysOfTheWeek[_selectedDay.weekday] ?? "",
+            (ApplicationData.daysOfTheWeek[_selectedDay.weekday] ?? "")
+                .toUpperCase(),
             style: Theme.of(context).textTheme.overline,
           ),
         ),

@@ -1,28 +1,28 @@
 import 'dart:convert';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
+// import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
   // String conversion helpers - used to communicate with db
 
   // - - IconData
-  static String? iconToString(IconData? icon) {
-    if (icon != null) {
-      dynamic map = serializeIcon(icon);
-      return jsonEncode(map);
-    } else {
-      return null;
-    }
-  }
+  // static String? iconToString(IconData? icon) {
+  //   if (icon != null) {
+  //     dynamic map = serializeIcon(icon);
+  //     return jsonEncode(map);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
-  static IconData? parseIcon(String? str) {
-    if (str != null) {
-      dynamic map = jsonDecode(str);
-      return deserializeIcon(map);
-    } else {
-      return null;
-    }
-  }
+  // static IconData? parseIcon(String? str) {
+  //   if (str != null) {
+  //     dynamic map = jsonDecode(str);
+  //     return deserializeIcon(map);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   // - - TimeOfDay
   static String? timeToString(TimeOfDay? time) {
@@ -98,5 +98,23 @@ class Utils {
   // Merge DateTime and TimeOfDay
   static DateTime timeAndDate(DateTime date, TimeOfDay time) {
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  }
+
+  // Set checkbox fill color
+  static Color? getCheckColor(int index, BuildContext context) {
+    switch (index) {
+      case 1:
+        {
+          return Theme.of(context).primaryColor;
+        }
+      case 2:
+        {
+          return Theme.of(context).errorColor;
+        }
+      default:
+        {
+          return null;
+        }
+    }
   }
 }

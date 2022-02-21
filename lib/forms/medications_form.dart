@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:medsreminder/components/dialogs.dart';
 import 'package:medsreminder/models/medication.dart';
 import 'package:medsreminder/models/reminder.dart';
@@ -31,7 +30,7 @@ class _MedicationsFormState extends State<MedicationsForm> {
   Medication _medication = Medication(
     name: "",
     sUnit: "mg",
-    icon: ApplicationData.medsIcons["default"]!,
+    icon: 0,
     daily: 0,
     strength: 0,
   );
@@ -66,9 +65,18 @@ class _MedicationsFormState extends State<MedicationsForm> {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Add medication'),
+              Text(
+                ('Add medication').toUpperCase(),
+                style: Theme.of(context)
+                    .textTheme
+                    .overline!
+                    .copyWith(fontSize: 12.0, height: 1.8),
+                textAlign: TextAlign.left,
+              ),
               Text(_titles[_pageIndex]),
             ],
           ),
@@ -91,7 +99,11 @@ class _MedicationsFormState extends State<MedicationsForm> {
                     nextFormStep();
                   }
                 },
-                child: Text(_actionText[_pageIndex])),
+                child: Text(
+                  _actionText[_pageIndex],
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                )),
           ],
         ),
         body: GestureDetector(
@@ -115,7 +127,12 @@ class _MedicationsFormState extends State<MedicationsForm> {
                   children: [
                     Container(
                       padding: EdgeInsets.all(18.0),
-                      child: Text('What Medication are you taking?'),
+                      child: Text(
+                          ('What Medication are you taking?').toUpperCase(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline!
+                              .copyWith(fontSize: 12.0, height: 1.6)),
                     ),
                     const Divider(
                       height: 1,
@@ -127,7 +144,13 @@ class _MedicationsFormState extends State<MedicationsForm> {
                     Container(
                       padding: EdgeInsets.all(18.0),
                       child: Text(
-                          '(Optional) Pick an icon to help you identify your medication'),
+                        ('(Optional) Pick an icon to help you identify your medication')
+                            .toUpperCase(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .overline!
+                            .copyWith(fontSize: 12.0, height: 1.6),
+                      ),
                     ),
                     const Divider(
                       height: 1,
@@ -146,7 +169,13 @@ class _MedicationsFormState extends State<MedicationsForm> {
                   children: [
                     Container(
                       padding: EdgeInsets.all(18.0),
-                      child: Text('Setup Reminders for daily assumptions'),
+                      child: Text(
+                          ('Setup Reminders for daily assumptions')
+                              .toUpperCase(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline!
+                              .copyWith(fontSize: 12.0, height: 1.6)),
                     ),
                     const Divider(
                       height: 1,
@@ -213,7 +242,7 @@ class _MedicationsFormState extends State<MedicationsForm> {
     FocusScope.of(context).unfocus();
     // show exit confirm dialog
     Dialogs.exitDialog("Exit without saving?",
-        "Are you sure you wanna exit without saving?", context);
+        "Are you sure you want to exit without saving?", context);
   }
 
   Future<void> sendData() async {
@@ -280,20 +309,24 @@ class _MedicationsFormState extends State<MedicationsForm> {
     return Row(
       children: <Widget>[
         Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.fromLTRB(18, 18, 9, 18),
-          child: Icon(
-            _medication.icon,
-            size: 44.0,
-          ),
-        ),
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(18, 18, 9, 18),
+            child: Image(
+              image: AssetImage(ApplicationData.pillsIcons[_medication.icon]!),
+              width: 64.0,
+            )),
         Expanded(
             flex: 1,
-            child: Padding(
+            child: Container(
+              width: 80,
               padding: EdgeInsets.fromLTRB(9, 18, 18, 18),
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0)))),
                 onPressed: pickIcon,
-                child: const Text('Open IconPicker'),
+                child: const Text('OPEN ICONPICKER'),
               ),
             )),
       ],
@@ -301,20 +334,14 @@ class _MedicationsFormState extends State<MedicationsForm> {
   }
 
   pickIcon() async {
-    IconData? icon = await FlutterIconPicker.showIconPicker(
-      context,
-      showSearchBar: false,
-      customIconPack: ApplicationData.medsIcons,
-      iconPackModes: [IconPack.custom],
-    );
-
-    setState(() {
-      if (icon != null) {
-        setState(() {
-          _medication.icon = icon;
-        });
-      }
-    });
+    int? newValue = await Dialogs.showIconPicker(
+        context: context, iconPack: ApplicationData.pillsIcons);
+    print(newValue);
+    if (newValue != null) {
+      setState(() {
+        _medication.icon = newValue;
+      });
+    }
   }
 
   // medication's name
@@ -326,7 +353,8 @@ class _MedicationsFormState extends State<MedicationsForm> {
           maxLength: 40,
           textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(14.0))),
             hintText: "This medication's name...",
             labelText: "Name*",
             helperText: "",
@@ -358,7 +386,8 @@ class _MedicationsFormState extends State<MedicationsForm> {
                 decoration: InputDecoration(
                   counterText: "",
                   icon: Icon(Icons.medication),
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(14.0))),
                   hintText: "",
                   labelText: "Strength (Optional)",
                 ),
@@ -434,7 +463,8 @@ class _MedicationsFormState extends State<MedicationsForm> {
             flex: 4,
             child: Container(
               alignment: Alignment.centerLeft,
-              child: Text("Assume daily"),
+              child: Text("Assume daily",
+                  style: Theme.of(context).textTheme.bodyText2),
             ),
           ),
           Expanded(
@@ -460,8 +490,12 @@ class _MedicationsFormState extends State<MedicationsForm> {
     if (_medication.daily == 1) {
       return Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(18.0),
+        padding: EdgeInsets.fromLTRB(18, 0, 18, 18),
         child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)))),
           onPressed: () {
             setState(() {
               _reminders.add(pushReminder());
@@ -496,7 +530,8 @@ class _MedicationsFormState extends State<MedicationsForm> {
                   width: 60,
                   alignment: Alignment.center,
                   //padding: .fromLTRB(9.0, 9.0, 9.0, 9.0),
-                  child: const Icon(Icons.remove_circle, color: Colors.red),
+                  child: Icon(Icons.remove_circle,
+                      color: Theme.of(context).errorColor),
                 ),
               ),
               // time picker
@@ -506,7 +541,9 @@ class _MedicationsFormState extends State<MedicationsForm> {
                   padding: EdgeInsets.fromLTRB(0.0, 0.0, 9.0, 9.0),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(14.0))),
                       hintText: Utils.prettyTime(_reminders[i].time),
                       helperText: "",
                     ),
@@ -541,7 +578,9 @@ class _MedicationsFormState extends State<MedicationsForm> {
                   child: TextFormField(
                     maxLength: 8,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(14.0))),
                       hintText: "How many pills...",
                       labelText: "Q.ty*",
                       counterText: "",

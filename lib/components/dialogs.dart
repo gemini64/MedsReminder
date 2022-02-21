@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:medsreminder/appdata/application_data.dart';
 import 'package:medsreminder/forms/medications_form.dart';
 import 'package:medsreminder/forms/appointments_form.dart';
 import 'package:medsreminder/models/medication.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:medsreminder/providers/medications_provider.dart';
 import 'package:medsreminder/providers/appointments_provider.dart';
 import 'package:medsreminder/providers/reminders_provider.dart';
+import 'package:medsreminder/appdata/meds_reminder_icons.dart';
 
 class Dialogs {
   // shows a 2 button alert to confirm pharma/appoint deletion
@@ -20,6 +22,8 @@ class Dialogs {
       context: context,
       builder: (_) {
         return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             title: Text(title),
             content: Text(message),
             actions: <Widget>[
@@ -57,6 +61,8 @@ class Dialogs {
       context: context,
       builder: (_) {
         return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             title: Text(title),
             content: Text(message),
             actions: <Widget>[
@@ -84,6 +90,8 @@ class Dialogs {
       context: context,
       builder: (_) {
         return SimpleDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
           children: <Widget>[
             SimpleDialogOption(
               onPressed: () {
@@ -94,7 +102,7 @@ class Dialogs {
                 );
               },
               child: Row(
-                children: const [
+                children: [
                   Expanded(
                     flex: 1,
                     child: Icon(
@@ -106,8 +114,11 @@ class Dialogs {
                     flex: 5,
                     child: Padding(
                       padding: EdgeInsets.all(14.0),
-                      child:
-                          Text('Add a Prescription', textAlign: TextAlign.left),
+                      child: Text(
+                        'Add a Prescription',
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
                     ),
                   ),
                 ],
@@ -128,7 +139,7 @@ class Dialogs {
                 );
               },
               child: Row(
-                children: const <Widget>[
+                children: <Widget>[
                   Expanded(
                     flex: 1,
                     child: Icon(
@@ -140,8 +151,11 @@ class Dialogs {
                     flex: 5,
                     child: Padding(
                       padding: EdgeInsets.all(14.0),
-                      child:
-                          Text('Add an Appointment', textAlign: TextAlign.left),
+                      child: Text(
+                        'Add an Appointment',
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
                     ),
                   ),
                 ],
@@ -168,16 +182,18 @@ class Dialogs {
                 .selectById(_reminder.referenceId);
 
         return SimpleDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
           children: <Widget>[
             // icon, name and strength
             Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.fromLTRB(0.0, 18.0, 0.0, 9.0),
-              child: Icon(
-                _medication.icon,
-                size: 64.0,
-              ),
-            ),
+                alignment: Alignment.center,
+                padding: EdgeInsets.fromLTRB(0.0, 18.0, 0.0, 9.0),
+                child: Image(
+                  image:
+                      AssetImage(ApplicationData.pillsIcons[_medication.icon]!),
+                  width: 64.0,
+                )),
             Container(
               padding: EdgeInsets.fromLTRB(30.0, 4.0, 30.0, 4.0),
               alignment: Alignment.center,
@@ -199,14 +215,21 @@ class Dialogs {
                         " " +
                         _medication.sUnit!)
                     : "",
-                style: Theme.of(context).textTheme.bodyText2,
+                style: (Theme.of(context).textTheme.subtitle2)!
+                    .copyWith(fontWeight: FontWeight.w400, fontSize: 14.0),
                 textAlign: TextAlign.center,
               ),
             ),
             // instructions
             Container(
               padding: EdgeInsets.all(18.0),
-              child: Text('Instructions'),
+              child: Text(
+                ('Instructions').toUpperCase(),
+                style: Theme.of(context)
+                    .textTheme
+                    .overline!
+                    .copyWith(fontSize: 12.0, height: 1.6),
+              ),
             ),
             const Divider(
               height: 1,
@@ -217,8 +240,10 @@ class Dialogs {
             Container(
               padding: EdgeInsets.all(18.0),
               child: Text(
-                  "Take ${_reminder.pills} at ${Utils.prettyTime(_reminder.time)}"),
+                  "Take ${_reminder.pills} at ${Utils.prettyTime(_reminder.time)}",
+                  style: Theme.of(context).textTheme.bodyText2),
             ),
+
             Container(
               padding: EdgeInsets.fromLTRB(30.0, 18.0, 30.0, 18.0),
               child: Row(
@@ -232,9 +257,15 @@ class Dialogs {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Icon(Icons.circle, size: 42.0),
+                        child: Icon(MedsReminder.left_circle, size: 42.0),
                       ),
-                      Text("BACK"),
+                      Text(
+                        "BACK",
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(fontSize: 10.0),
+                      ),
                     ],
                   ),
                   Column(
@@ -270,9 +301,19 @@ class Dialogs {
 
                           Navigator.pop(context);
                         },
-                        child: Icon(Icons.remove_circle, size: 42.0),
+                        child: Icon(
+                          MedsReminder.minus_circle,
+                          size: 42.0,
+                          color: Theme.of(context).errorColor,
+                        ),
                       ),
-                      Text("MISSED"),
+                      Text(
+                        "MISSED",
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(fontSize: 10.0),
+                      ),
                     ],
                   ),
                   Column(
@@ -308,9 +349,16 @@ class Dialogs {
 
                           Navigator.pop(context);
                         },
-                        child: Icon(Icons.check_circle, size: 42.0),
+                        child: Icon(MedsReminder.ok_circle,
+                            size: 42.0, color: Colors.teal),
                       ),
-                      Text("TAKEN"),
+                      Text(
+                        "TAKEN",
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(fontSize: 10.0),
+                      ),
                     ],
                   ),
                 ],
@@ -320,5 +368,93 @@ class Dialogs {
         );
       },
     );
+  }
+
+// reminders dialog - 3 buttons
+  static Future<int?> showIconPicker(
+      {required BuildContext context,
+      required Map<int, String> iconPack,
+      double? imageSize,
+      double? spacing}) async {
+    int? outValue = null;
+    await showDialog(
+      context: context,
+      builder: (_) {
+        // initialize data
+        return SimpleDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(18.0),
+              child: Text(
+                ('Pick an Icon').toUpperCase(),
+                style: Theme.of(context)
+                    .textTheme
+                    .overline!
+                    .copyWith(fontSize: 12.0, height: 1.6),
+              ),
+            ),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              indent: 18,
+              endIndent: 18,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.35,
+              width: MediaQuery.of(context).size.width,
+              child: Container(
+                child: GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 0.0,
+                      mainAxisSpacing: 0.0,
+                      crossAxisCount: 3,
+                    ),
+                    itemCount: iconPack.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SimpleDialogOption(
+                        onPressed: () {
+                          outValue = index;
+                          Navigator.pop(context, index);
+                        },
+                        child: Image(
+                          image: AssetImage(iconPack[index]!),
+                          width: (imageSize == null) ? 64.0 : imageSize,
+                        ),
+                      );
+                    }),
+              ),
+            ),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              indent: 18,
+              endIndent: 18,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(18.0, 9, 18, 0),
+              alignment: Alignment.centerRight,
+              child: SimpleDialogOption(
+                onPressed: () {
+                  outValue = null;
+                  Navigator.pop(context, null);
+                },
+                child: Text(
+                  'Close',
+                  style: Theme.of(context)
+                      .textTheme
+                      .button!
+                      .copyWith(color: Colors.teal),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    return outValue;
   }
 }

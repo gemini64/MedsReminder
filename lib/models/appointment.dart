@@ -8,7 +8,7 @@ class Appointment implements SQLObject {
   String name;
   String? place;
   String? note;
-  IconData? icon;
+  int? icon;
   int reminder;
   DateTime? date;
   TimeOfDay? time;
@@ -31,7 +31,7 @@ class Appointment implements SQLObject {
         name = res["name"],
         place = res["place"],
         note = res["note"],
-        icon = Utils.parseIcon(res["icon"]),
+        icon = res["icon"],
         reminder = res["reminder"],
         date = Utils.parseDate(res["date"]),
         time = Utils.parseTime(res["time"]);
@@ -44,7 +44,7 @@ class Appointment implements SQLObject {
       'name': name,
       'place': place,
       'note': note,
-      'icon': Utils.iconToString(icon),
+      'icon': icon,
       'reminder': reminder,
       'date': Utils.dateToString(date),
       'time': Utils.timeToString(time)

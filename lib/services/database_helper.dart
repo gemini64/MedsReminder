@@ -36,7 +36,7 @@ class DatabaseHelper {
             name TEXT NOT NULL,
             strength INT DEFAULT 0,
             sUnit TEXT DEFAULT "mg",
-            icon TEXT NOT NULL,
+            icon INT NOT NULL,
             daily INT NOT NULL
           )
           ''');
@@ -47,7 +47,7 @@ class DatabaseHelper {
             name TEXT NOT NULL,
             place TEXT DEFAULT "",
             note TEXT DEFAULT "",
-            icon TEXT NOT NULL,
+            icon INT NOT NULL,
             reminder INT NOT NULL,
             date TEXT,
             time TEXT

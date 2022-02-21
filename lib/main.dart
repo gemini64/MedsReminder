@@ -1,5 +1,7 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
+import 'package:medsreminder/appdata/application_data.dart';
 import 'package:medsreminder/components/dialogs.dart';
 import 'package:medsreminder/forms/medications_form.dart';
 import 'package:medsreminder/services/notification_helper.dart';
@@ -8,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:medsreminder/providers/medications_provider.dart';
 import 'package:medsreminder/providers/appointments_provider.dart';
 import 'package:medsreminder/providers/reminders_provider.dart';
+import 'package:medsreminder/providers/preferences_provider.dart';
 
 import 'package:medsreminder/screens/home_screen.dart';
 import 'package:medsreminder/screens/calendar_screen.dart';
@@ -34,6 +37,7 @@ Future<void> main() async {
 
 // this is used to access navigator without a context handle
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final prefs = SharedPreferences.getInstance();
 
 /// main content wrapper
 class MyApp extends StatelessWidget {
@@ -46,14 +50,19 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MedicationsProvider()),
         ChangeNotifierProvider(create: (_) => AppointmentsProvider()),
         ChangeNotifierProvider(create: (_) => RemindersProvider()),
+        ChangeNotifierProvider(create: (_) => PreferencesProvicer()),
       ],
-      child: MaterialApp(
-        navigatorKey: navigatorKey,
-        title: 'MedsReminder',
-        theme: ThemeData(
-            brightness: Brightness.light, primaryColor: Colors.blueGrey),
-        home: HomeWidget(),
-        debugShowCheckedModeBanner: true,
+      child: Consumer<PreferencesProvicer>(
+        builder: (context, preferences, child) {
+          String theme = preferences.theme;
+          return MaterialApp(
+            navigatorKey: navigatorKey,
+            title: 'MedsReminder',
+            theme: ApplicationData.theme[theme],
+            home: HomeWidget(),
+            debugShowCheckedModeBanner: true,
+          );
+        },
       ),
     );
   }
@@ -115,44 +124,54 @@ class _HomeWidgetState extends State<HomeWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         title: Text(_titles[_pageIndex]),
         centerTitle: true,
-
-        // this at the moment contains only a placeholder add button
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add),
-            tooltip: 'Add an appointment or prescription',
-            onPressed: () {
-              _buttonHandler(context, _pageIndex);
-            },
-          ),
-        ],
+        actions: (_pageIndex != 3)
+            ? <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  tooltip: 'Add an appointment or prescription',
+                  onPressed: () {
+                    _buttonHandler(context, _pageIndex);
+                  },
+                ),
+              ]
+            : [],
       ),
       body: _pages.elementAt(_pageIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Calendar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.medication),
-            label: 'Meds',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'More',
-          ),
-        ],
-        currentIndex: _pageIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(color: Colors.grey[700]!, offset: Offset(0, -0.4)),
+          ],
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today),
+              label: 'Calendar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.medication),
+              label: 'Meds',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.more_horiz),
+              label: 'More',
+            ),
+          ],
+          currentIndex: _pageIndex,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          elevation: 0,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
