@@ -5,16 +5,16 @@
 - Marzona Eugenio - 128623
 
 ## Una breve descrizione
-Questo repository contiene il sorgente dell'applicazione flutter sviluppata per il corso di "Mobile Development" dell'Università degli studio di Udine.
+Questo repository contiene il sorgente dell'applicazione flutter sviluppata per il corso di "Mobile Development" dell'Università degli Studi di Udine.
 
-Si tratta di una semplice agenda digitale per tenere traccia dell'assunzione di farmaci ed appuntamenti medici.
+Si tratta di una semplice agenda digitale per tenere traccia di farmaci da assumere ed appuntamenti medici.
 
 ## Compilare il progetto
 L'applicazione è stata testata (in modo non estensivo) su un dispositivo con Andriod 10 (Le eco le max 2).
 
 Per la compilazione ho utilizzato la versione 2.8.0 di flutter, in quanto ho riscontrato problemi di compatibilità con alcuni dei pacchetti utilizzati con l'ultima vesione disponibile per macOS.
 
-L'apk già compilato è disponibile nella directory *./build/app/outputs/flutter-apk/app-release.apk*.
+L'apk già compilato è disponibile nella sezione _Releases_ di questo repository.
 
 Per evitare problemi in fase di compilazione consiglio in ogni caso di effettuare un cleanup del progetto ...
     
