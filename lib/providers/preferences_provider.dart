@@ -1,26 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:medsreminder/main.dart';
 
-class PreferencesProvicer with ChangeNotifier {
-  // - - default keys
-  String _theme = "light";
+class PreferencesProvider with ChangeNotifier {
+  // - - default
+  String _theme = currentTheme;
   get theme => _theme;
 
-  Future<void> switchTheme() async {
+  Future<void> toggleChangeTheme() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? current = sharedPreferences.getString("theme");
 
     if (current == null) {
-      _theme = "light";
+      _theme = (_theme == "light") ? "dark" : "light";
     } else {
       _theme = (current == "light") ? "dark" : "light";
     }
-    sharedPreferences.setString("theme", _theme);
+    await sharedPreferences.setString("theme", _theme);
     notifyListeners();
-  }
-
-  Future<String> getTheme() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString("theme") ?? "theme";
   }
 }

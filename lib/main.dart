@@ -24,6 +24,16 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationHelper().init();
 
+  // init theme
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  String? current = sharedPreferences.getString("theme");
+
+  if (current == null) {
+      await sharedPreferences.setString("theme", currentTheme);
+    } else {
+      currentTheme = current;
+    }
+
   // schedule reminders reset
   final cron = Cron();
   cron.schedule(Schedule.parse('0 0 * * *'), () async {
@@ -37,7 +47,7 @@ Future<void> main() async {
 
 // this is used to access navigator without a context handle
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-final prefs = SharedPreferences.getInstance();
+String currentTheme = "light";
 
 /// main content wrapper
 class MyApp extends StatelessWidget {
@@ -50,15 +60,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MedicationsProvider()),
         ChangeNotifierProvider(create: (_) => AppointmentsProvider()),
         ChangeNotifierProvider(create: (_) => RemindersProvider()),
-        ChangeNotifierProvider(create: (_) => PreferencesProvicer()),
+        ChangeNotifierProvider(create: (_) => PreferencesProvider()),
       ],
-      child: Consumer<PreferencesProvicer>(
+      child: Consumer<PreferencesProvider>(
         builder: (context, preferences, child) {
-          String theme = preferences.theme;
           return MaterialApp(
             navigatorKey: navigatorKey,
             title: 'MedsReminder',
-            theme: ApplicationData.theme[theme],
+            theme: ApplicationData.theme[preferences.theme],
             home: HomeWidget(),
             debugShowCheckedModeBanner: true,
           );

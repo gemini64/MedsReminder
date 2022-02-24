@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:medsreminder/providers/preferences_provider.dart';
 import 'package:medsreminder/screens/settings_screen.dart';
+import 'package:provider/provider.dart';
 
 class MoreScreen extends StatefulWidget {
   const MoreScreen({Key? key}) : super(key: key);
@@ -12,6 +14,21 @@ class _MoreScreenState extends State<MoreScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView(physics: NeverScrollableScrollPhysics(), children: [
+      Container(
+                        padding: EdgeInsets.all(18.0),
+                        child: Text(
+                            ('General')
+                                .toUpperCase(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .overline!
+                                .copyWith(fontSize: 12.0, height: 1.6)),
+                      ),
+                      const Divider(
+                        height: 1,
+                        thickness: 1,
+                        indent: 18,
+                      ),
       // settings button
       InkWell(
           onTap: () {

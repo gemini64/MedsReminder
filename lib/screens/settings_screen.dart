@@ -3,6 +3,7 @@ import 'package:medsreminder/providers/preferences_provider.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
+
   const SettingsScreen({
     Key? key,
   }) : super(key: key);
@@ -12,13 +13,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late String _theme;
+  late bool _theme;
 
   @override
   void initState() {
     super.initState();
-
-    _theme = Provider.of<PreferencesProvicer>(context, listen: false).theme;
+    _theme = (Provider.of<PreferencesProvider>(context, listen: false).theme == "dark");
   }
 
   @override
@@ -43,9 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
       // Options
-      body: Consumer<PreferencesProvicer>(
-        builder: (context, preferences, child) {
-          return ListView(
+      body: ListView(
             children: <Widget>[
               Container(
                 padding: EdgeInsets.fromLTRB(18.0, 9.0, 9.0, 9.0),
@@ -63,23 +61,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       flex: 1,
                       child: Container(
                         alignment: Alignment.centerRight,
-                        child: Switch(
-                          value: (_theme == "dark"),
+                        child: GestureDetector( 
+                          child: Switch(
+                          value: (_theme),
                           onChanged: (value) {
-                            preferences.switchTheme();
                             setState(() {
-                              _theme = (_theme == "dark") ? "light" : "dark";
+                              _theme = !_theme;
                             });
+                            Provider.of<PreferencesProvider>(context, listen: false).toggleChangeTheme();
                           },
-                        ),
+                        ),),
                       ),
                     ),
                   ],
                 ),
               ),
             ],
-          );
-        },
       ),
     );
   }

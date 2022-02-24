@@ -126,8 +126,8 @@ class ApplicationData {
 
   // - - local notifications Theme Data
   static Map<String, Color?> notificationsColor = {
-    "medication": Colors.pinkAccent,
-    "appointment": Colors.lightBlue,
+    "medication": Colors.cyan,
+    "appointment": Colors.deepOrangeAccent,
   };
 
   static Map<String, DrawableResourceAndroidBitmap?> notificationsIcons = {
